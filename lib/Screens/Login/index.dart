@@ -110,8 +110,7 @@ class LoginScreenState extends State<LoginScreen>
                                       child: new SignIn()),
                                 )
                               : new StaggerAnimation(
-                                  buttonController:
-                                      _loginButtonController.view),
+                                  buttonController: _loginButtonController.view)
                         ],
                       ),
                     ],
