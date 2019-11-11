@@ -15,7 +15,12 @@ dependencies:
   intl: "^0.15.2"
   http: ^0.12.0+2
   folding_cell: "^0.1.2"
-  font_awesome_flutter: ^8.5.0
+  mime_type: ^0.2.4
+  toast: ^0.1.5
+  flutter_html_to_pdf: ^0.5.2
+  path_provider: ^1.4.0
+  flutter_full_pdf_viewer: ^1.0.6
+
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +35,8 @@ flutter:
     - assets/fondo.jpg
     - assets/home.jpeg
     - assets/login.png
+    - assets/fondo_azul.jpg
+    - assets/fondo_azul_oscuro.jpg
     
   # To add assets to your application, add an assets section, like this:
   # assets:

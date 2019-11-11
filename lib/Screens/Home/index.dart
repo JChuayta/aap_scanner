@@ -4,6 +4,8 @@ import 'package:procesos_judiciales/Model/persona_model.dart';
 import 'package:procesos_judiciales/Model/proceso_model.dart';
 import 'package:procesos_judiciales/Providers/proceso_provider.dart' as p;
 import 'package:procesos_judiciales/Screens/Image/index.dart';
+import 'package:procesos_judiciales/Screens/Pdf/index.dart';
+import 'package:procesos_judiciales/global.dart';
 
 class HomeScreen extends StatefulWidget {
   final Persona persona;
@@ -25,10 +27,19 @@ class _HomeScreenState extends State<HomeScreen> {
       new GlobalKey<SimpleFoldingCellState>();
   GlobalKey<SimpleFoldingCellState> _foldingCellKey5 =
       new GlobalKey<SimpleFoldingCellState>();
+  void cargandoProcesos() async {
+    var data =
+        await p.ProcesoProvider().fetchProcesos(widget.persona.id.toString());
+    setState(() {
+      proceso_list.addAll(data);
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    NOMBRE = widget.persona.nombre + ' ' + widget.persona.apellido;
     cargandoProcesos();
   }
 
@@ -234,12 +245,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.note,
                     color: Color(0xffF7B928),
                   ),
-                 Text("  "),
+                  Text("  "),
                   Expanded(
-                      child: Text(
-                    pro.descripcion.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),),
+                    child: Text(
+                      pro.descripcion.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -324,18 +336,23 @@ class _HomeScreenState extends State<HomeScreen> {
             Divider(
               height: 20.0,
             ),
-            _crearBotones(context),
+            _crearBotones(context, p),
           ],
         ));
   }
 
-  Widget _crearBotones(BuildContext context) {
+  Widget _crearBotones(BuildContext context, Proceso p) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Container(
           child: RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PdfScreen(idProceso: p.id)));
+            },
             child: Row(
               children: <Widget>[
                 Icon(
@@ -357,7 +374,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           child: RaisedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ImageScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ImageScreen(idProceso: p.id)));
             },
             child: Row(
               children: <Widget>[
@@ -379,13 +399,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
-  }
-
-  void cargandoProcesos() async {
-    var data =
-        await p.ProcesoProvider().fetchProcesos(widget.persona.id.toString());
-    setState(() {
-      proceso_list.addAll(data);
-    });
   }
 }
